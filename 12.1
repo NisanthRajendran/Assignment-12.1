@@ -2,6 +2,51 @@ Explain the need of Flume.
    * It is assumed that the data is already in HDFS, or can be copied there in bulk,but many systems don't meet this assumption.
    * They produce streams of data that we would like to aggregate, store, and analyze using Hadoop and Flume is fit for use in these systems.
    * Flume is designed for high-volume ingestion into Hadoop of event-based data. 
-   * 
+   * Flume NG uses channel-based transactions to guarantee reliable message delivery. 
+   * When a message moves from one agent to another, two transactions are started, one on the agent that delivers the event and the other on the agent that receives the event.
+     This ensures guaranteed delivery semantics.
+   * Flume is used to log manufacturing operations. 
+   * The large volume of log data can be streamed through flume into the tool for analysis and can be stored in HDFS.
+   
+   
+Working of Flume:
+   Flume consists of 
+     •	Event
+     •	Source
+     •	Sink
+     •	Channel
+     •	Agent
+     •	Client
+     
+ *EVENT:
+     It is a data or log entry that is transported from a source to a destination.
+     A typical Flume event would have a header and byte payload
+ 
+ *SOURCE:
+     Source is the entity through which data enters into Flume. Sources either actively poll for data or passively wait for data to be delivered to them.
+     Example: Avro source, Thrift source
+     
+ *SINK:
+     Sink is the entity that delivers the data to the destination.HDFS is a sink.
+     
+ *CHANNEL:
+     Channel is the conduit between the Source and the Sink. Sources ingest events into the channel and the sinks drain the channel.
+     Example: File system channel, Memory channel etc.,
+  
+ *AGENT:
+     It is a long-lived Java process that runs sources and sinks, connected by channels.
+     
+ *CLIENT:
+     Client is the entity that produces and transmits the Event to the Source operating within the Agent.
+     
+WORKING:
+   *Flow in flume starts from client.
+   *Event is transferred to source by agent.
+   *Event from source is transferred to one or more channels.
+   *Sink drains these channels 
+   *Channels decouple the ingestion rate from drain rate using the familiar producer-consumer model of data exchange.
+   *The Sink of one Agent can be chained to the Source of another Agent. 
+
+
      
 
